@@ -9,3 +9,5 @@ Tutorials for installation, library and commandline usage. New users start here.
     :caption: Tutorials
 
     tutorials/installation
+    tutorials/querying-endpoints
+    tutorials/running-the-server
