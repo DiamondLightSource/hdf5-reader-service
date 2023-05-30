@@ -20,6 +20,14 @@
                 // https://github.com/microsoft/vscode-python/issues/693
                 "PYTEST_ADDOPTS": "--no-cov"
             },
+        },
+        {
+            "name": "HDF5 Reader Service",
+            "type": "python",
+            "request": "launch",
+            "justMyCode": false,
+            "module": "hdf5_reader_service",
+            "console": "integratedTerminal",
         }
     ]
 }
