@@ -16,7 +16,7 @@
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/0.1.2/"
   },
   {
-    "version": "helm-chart",
-    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/helm-chart/"
+    "version": "vscode-launch",
+    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/vscode-launch/"
   }
 ]
