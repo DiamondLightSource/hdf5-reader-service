@@ -13,7 +13,6 @@ from hdf5_reader_service.model import (
 
 
 def fetch_metadata(path: str, subpath: str, swmr: bool) -> MetadataNode:
-
     path = "/" + path
 
     with h5py.File(path, "r", swmr=swmr, libver="latest") as f:
