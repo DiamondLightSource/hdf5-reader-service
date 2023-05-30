@@ -5,7 +5,6 @@ from hdf5_reader_service.utils import h5_tree_map
 
 
 def fetch_shapes(path: str, subpath: str, swmr: bool) -> DataTree[ShapeMetadata]:
-
     path = "/" + path
 
     def get_shape(name: str, obj: h5py.HLObject) -> ShapeMetadata:

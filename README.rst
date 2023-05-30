@@ -7,25 +7,24 @@ Microservice for reading HDF5 data and serving it via REST, aimed at performance
 
 ============== ==============================================================
 PyPI           ``pip install hdf5-reader-service``
-Source code    https://github.com/DiamondLightSource/python-hdf5-reader-service
+Source code    https://github.com/DiamondLightSource/hdf5-reader-service
 Documentation  https://DiamondLightSource.github.io/hdf5-reader-service
-Releases       https://github.com/DiamondLightSource/python-hdf5-reader-service/releases
+Releases       https://github.com/DiamondLightSource/hdf5-reader-service/releases
 ============== ==============================================================
-
 
 To run a basic server::
 
     hdf5-reader-service --host <host> --port <port>
 
-.. |code_ci| image:: https://github.com/DiamondLightSource/python-hdf5-reader-service/workflows/Code%20CI/badge.svg?branch=master
-    :target: https://github.com/DiamondLightSource/python-hdf5-reader-service/actions?query=workflow%3A%22Code+CI%22
+.. |code_ci| image:: https://github.com/DiamondLightSource/hdf5-reader-service/actions/workflows/code.yml/badge.svg?branch=main
+    :target: https://github.com/DiamondLightSource/hdf5-reader-service/actions/workflows/code.yml
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/DiamondLightSource/python-hdf5-reader-service/workflows/Docs%20CI/badge.svg?branch=master
-    :target: https://github.com/DiamondLightSource/python-hdf5-reader-service/actions?query=workflow%3A%22Docs+CI%22
+.. |docs_ci| image:: https://github.com/DiamondLightSource/hdf5-reader-service/actions/workflows/docs.yml/badge.svg?branch=main
+    :target: https://github.com/DiamondLightSource/hdf5-reader-service/actions/workflows/docs.yml
     :alt: Docs CI
 
-.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/hdf5-reader-service/branch/master/graph/badge.svg
+.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/hdf5-reader-service/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/DiamondLightSource/hdf5-reader-service
     :alt: Test Coverage
 
