@@ -14,5 +14,9 @@
   {
     "version": "0.1.2",
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/0.1.2/"
+  },
+  {
+    "version": "helm-chart",
+    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/helm-chart/"
   }
 ]
