@@ -1,5 +1,11 @@
-from ._version_git import __version__
+import sys
 
-# __all__ defines the public API for the package.
-# Each module also defines its own __all__.
+if sys.version_info < (3, 8):
+    from importlib_metadata import version  # noqa
+else:
+    from importlib.metadata import version  # noqa
+
+__version__ = version("hdf5-reader-service")
+del version
+
 __all__ = ["__version__"]

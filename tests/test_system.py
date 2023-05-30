@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
-from hdf5_reader_service.main import app
+from hdf5_reader_service.app import app
 from hdf5_reader_service.model import (
     DataTree,
     MetadataNode,

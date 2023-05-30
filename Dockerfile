@@ -1,24 +1,37 @@
-##### Shared Environment stage #########################################################
-FROM registry.hub.docker.com/library/python:3.9-slim AS base
+# This file is for use as a devcontainer and a runtime container
+#
+# The devcontainer should use the build target and run as root with podman
+# or docker with user namespaces.
+#
+FROM python:3.11 as build
 
-ENV PIP_DEPENDENCIES wheel pip
-ENV ENV_DIR /hdf5_reader_service
+ARG PIP_OPTIONS=.
 
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+# Add any system dependencies for the developer/build environment here e.g.
+# RUN apt-get update && apt-get upgrade -y && \
+#     apt-get install -y --no-install-recommends \
+#     desired-packages \
+#     && rm -rf /var/lib/apt/lists/*
 
-# Install pip dependencies
-COPY requirements.txt .
-RUN python3.9 -m pip install --upgrade pip
-RUN python3.9 -m pip install -r requirements.txt
+# set up a virtual environment and put it in PATH
+RUN python -m venv /venv
+ENV PATH=/venv/bin:$PATH
 
-# Copy hdf5-reader-service code into container
-COPY . ${ENV_DIR}
+# Copy any required context for the pip install over
+COPY . /context
+WORKDIR /context
 
-ENV ENV_DIR /hdf5_reader_service
-WORKDIR ${ENV_DIR}
+# install python package into /venv
+RUN pip install ${PIP_OPTIONS}
 
-ENV PYTHON_SITE_PACKAGES /usr/local/lib/python3.9/site-packages
+FROM python:3.11-slim as runtime
 
-CMD ["hdf5-reader-service"]
+# Add apt-get system dependecies for runtime here if needed
+
+# copy the virtual environment from the build stage and put it in PATH
+COPY --from=build /venv/ /venv/
+ENV PATH=/venv/bin:$PATH
+
+# change this entrypoint if it is not the same as the repo
+ENTRYPOINT ["hdf5-reader-service"]
+CMD ["--version"]
