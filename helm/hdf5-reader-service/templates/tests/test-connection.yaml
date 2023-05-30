@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "hdf5-reader-service.fullname" . }}-test-connection"
+  labels:
+    {{- include "hdf5-reader-service.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "hdf5-reader-service.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
