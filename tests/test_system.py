@@ -41,7 +41,7 @@ def test_read_shapes(
     shape: DataTree[ShapeMetadata],
 ):
     response = client.get(
-        "/shapes/", params={"path": test_data_path, "subpath": subpath}
+        "/shapes/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
     actual_shape = DataTree[ShapeMetadata].parse_obj(response.json())
@@ -52,7 +52,9 @@ def test_read_shapes(
 def test_read_tree(
     client: TestClient, test_data_path: Path, subpath: str, tree: DataTree[MetadataNode]
 ):
-    response = client.get("/tree/", params={"path": test_data_path, "subpath": subpath})
+    response = client.get(
+        "/tree/", params={"path": str(test_data_path), "subpath": subpath}
+    )
     assert response.status_code == 200
     actual_tree = DataTree[MetadataNode].parse_obj(response.json())
     assert actual_tree == tree
@@ -62,7 +64,9 @@ def test_read_tree(
 def test_read_info(
     client: TestClient, test_data_path: Path, subpath: str, metadata: MetadataNode
 ):
-    response = client.get("/info/", params={"path": test_data_path, "subpath": subpath})
+    response = client.get(
+        "/info/", params={"path": str(test_data_path), "subpath": subpath}
+    )
     assert response.status_code == 200
     actual_metadata = MetadataNode.parse_obj(response.json())
     assert actual_metadata == metadata
@@ -73,7 +77,7 @@ def test_read_search(
     client: TestClient, test_data_path: Path, subpath: str, children: NodeChildren
 ):
     response = client.get(
-        "/search/", params={"path": test_data_path, "subpath": subpath}
+        "/search/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
     actual_children = NodeChildren.parse_obj(response.json())
@@ -90,7 +94,7 @@ def test_read_slice(
     response = client.get(
         "/slice/",
         params={
-            "path": test_data_path,
+            "path": str(test_data_path),
             "subpath": "/entry/DIFFRACTION/data",
             "slice_info": slice_info,
         },
