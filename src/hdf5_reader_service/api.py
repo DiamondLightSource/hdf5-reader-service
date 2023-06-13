@@ -2,7 +2,7 @@ import os
 from typing import Optional
 
 from fastapi import APIRouter
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, PlainTextResponse
 
 from hdf5_reader_service.model import (
     DataTree,
@@ -41,10 +41,10 @@ def get_shapes(path: str, subpath: str = "/") -> JSONResponse:
     return NumpySafeJSONResponse(shapes)
 
 
-@router.get("/slice/")
+@router.get("/slice/", response_class=PlainTextResponse)
 def get_slice(
     path: str, subpath: str = "/", slice_info: Optional[str] = None
-) -> JSONResponse:
+) -> PlainTextResponse:
     """Function that tells flask to output the metadata of the HDF5 file node.
     The slice_info parameter should take the form
     start:stop:steps,start:stop:steps,...
@@ -52,7 +52,7 @@ def get_slice(
     data_slice = fork_and_do(
         fetch_slice, args=(path, subpath, slice_info, SWMR_DEFAULT)
     )
-    return NumpySafeJSONResponse(data_slice)
+    return data_slice
 
 
 @router.get("/tree/", response_model=DataTree[MetadataNode])

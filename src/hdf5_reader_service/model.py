@@ -30,7 +30,7 @@ class ByteOrder(Enum):
 class DatasetMicroStructure(BaseModel):
     itemsize: int
     kind: str
-    byte_order: ByteOrder = ByteOrder.NOT_APPLICABLE
+    byte_order: ByteOrder
 
 
 class DatasetStructure(BaseModel):
