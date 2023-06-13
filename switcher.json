@@ -16,6 +16,10 @@
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/0.1.2/"
   },
   {
+    "version": "initial-investigations",
+    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/initial-investigations/"
+  },
+  {
     "version": "launcher",
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/launcher/"
   },
