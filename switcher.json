@@ -22,9 +22,5 @@
   {
     "version": "launcher",
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/launcher/"
-  },
-  {
-    "version": "vscode-launch",
-    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/vscode-launch/"
   }
 ]
