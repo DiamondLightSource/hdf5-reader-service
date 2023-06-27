@@ -1,8 +1,8 @@
 from enum import Enum
-from typing import Any, Generic, List, Mapping, Optional, Tuple, TypeVar, Union
+from typing import Any, Generic, List, Literal, Mapping, Optional, Tuple, TypeVar, Union
 
 import h5py as h5
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 
 
@@ -58,6 +58,7 @@ T = TypeVar("T")
 class ValidNode(GenericModel, Generic[T]):
     contents: T
     subnodes: List["DataTree"] = []
+    type: Literal["ValidNodeMetadataNode_"] = "ValidNodeMetadataNode_"
 
 
 class InvalidNodeReason(Enum):
@@ -67,12 +68,13 @@ class InvalidNodeReason(Enum):
 
 class InvalidNode(BaseModel):
     reason: InvalidNodeReason
+    type: Literal["InvalidNode"] = "InvalidNode"
 
 
 class DataTree(GenericModel, Generic[T]):
     name: str
     valid: bool
-    node: Union[InvalidNode, ValidNode[T]]
+    node: Union[InvalidNode, ValidNode[T]] = Field(discriminator="type")
 
 
 ValidNode.update_forward_refs()
