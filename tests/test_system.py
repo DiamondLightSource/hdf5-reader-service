@@ -44,7 +44,7 @@ def test_read_shapes(
         "/shapes/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
-    actual_shape = DataTree[ShapeMetadata].parse_obj(response.json())
+    actual_shape = DataTree[ShapeMetadata].model_validate(response.json())
     assert actual_shape == shape
 
 
@@ -56,7 +56,7 @@ def test_read_tree(
         "/tree/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
-    actual_tree = DataTree[MetadataNode].parse_obj(response.json())
+    actual_tree = DataTree[MetadataNode].model_validate(response.json())
     assert actual_tree == tree
 
 
@@ -68,7 +68,7 @@ def test_read_info(
         "/info/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
-    actual_metadata = MetadataNode.parse_obj(response.json())
+    actual_metadata = MetadataNode.model_validate(response.json())
     assert actual_metadata == metadata
 
 
@@ -80,7 +80,7 @@ def test_read_search(
         "/search/", params={"path": str(test_data_path), "subpath": subpath}
     )
     assert response.status_code == 200
-    actual_children = NodeChildren.parse_obj(response.json())
+    actual_children = NodeChildren.model_validate(response.json())
     assert actual_children == children
 
 
