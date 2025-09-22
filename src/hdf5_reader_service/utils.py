@@ -33,7 +33,7 @@ def safe_json_dump(content):
                 return content.decode("utf-8")
             elif isinstance(content, BaseModel):
                 # Handle the pydantic model case
-                return content.dict()
+                return content.model_dump()
         raise TypeError
 
     # Not all numpy dtypes are supported by orjson.

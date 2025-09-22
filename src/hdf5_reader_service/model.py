@@ -3,7 +3,6 @@ from typing import Any, Generic, List, Mapping, Optional, Tuple, TypeVar, Union
 
 import h5py as h5
 from pydantic import BaseModel
-from pydantic.generics import GenericModel
 
 
 class DatasetMacroStructure(BaseModel):
@@ -55,7 +54,7 @@ class ShapeMetadata(BaseModel):
 T = TypeVar("T")
 
 
-class ValidNode(GenericModel, Generic[T]):
+class ValidNode(BaseModel, Generic[T]):
     contents: T
     subnodes: List["DataTree"] = []
 
@@ -69,10 +68,10 @@ class InvalidNode(BaseModel):
     reason: InvalidNodeReason
 
 
-class DataTree(GenericModel, Generic[T]):
+class DataTree(BaseModel, Generic[T]):
     name: str
     valid: bool
     node: Union[InvalidNode, ValidNode[T]]
 
 
-ValidNode.update_forward_refs()
+ValidNode.model_rebuild()
