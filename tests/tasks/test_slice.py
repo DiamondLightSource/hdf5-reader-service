@@ -158,6 +158,12 @@ def test_fetch_slice_of_group(test_data_path: Path) -> None:
         fetch_slice(str(test_data_path), "/entry", None, True)
 
 
+def test_fetch_slice_subpath_not_in_path(test_data_path: Path) -> None:
+    with pytest.raises(KeyError):
+        slice_info = "2:7:1,10:14:1,9:10:1,0:3:1"
+        fetch_slice(str(test_data_path), "/something_else", slice_info, True)
+
+
 def test_fetch_slice_of_broken_link(test_data_path: Path) -> None:
     with pytest.raises(KeyError):
         fetch_slice(str(test_data_path), "/entry/DIFFRACTION/simx", None, True)
