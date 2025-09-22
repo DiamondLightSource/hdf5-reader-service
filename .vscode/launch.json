@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Debug Unit Test",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "justMyCode": false,
             "program": "${file}",
@@ -20,7 +20,7 @@
                 // https://github.com/microsoft/vscode-python/issues/693
                 "PYTEST_ADDOPTS": "--no-cov"
             },
-                    },
+        },
         {
             "name": "HDF5 Reader Service",
             "type": "python",

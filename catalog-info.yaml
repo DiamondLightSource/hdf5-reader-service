@@ -5,6 +5,6 @@ metadata:
   title: hdf5-reader-service
   description: Microservice for reading HDF5 data and serving it via REST, aimed at performance and concurrency
 spec:
-  type: documentation
+  type: service
   lifecycle: experimental
   owner: group:default/sscc
