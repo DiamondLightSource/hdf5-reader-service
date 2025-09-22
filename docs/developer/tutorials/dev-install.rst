@@ -16,7 +16,7 @@ Install dependencies
 --------------------
 
 You can choose to either develop on the host machine using a `venv` (which
-requires python 3.9 or later) or to run in a container under `VSCode
+requires python 3.8 or later) or to run in a container under `VSCode
 <https://code.visualstudio.com/>`_
 
 .. tab-set::
@@ -37,10 +37,10 @@ requires python 3.9 or later) or to run in a container under `VSCode
             $ code hdf5-reader-service
             # Click on 'Reopen in Container' when prompted
             # Open a new terminal
-            
-        .. note:: 
-            
-            See the epics-containers_ documentation for more complex 
+
+        .. note::
+
+            See the epics-containers_ documentation for more complex
             use cases, such as integration with podman.
 
 See what was installed

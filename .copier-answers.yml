@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier
+_commit: 1.0.0
+_src_path: https://github.com/DiamondLightSource/python-copier-template.git
+author_email: douglas.winter@diamond.ac.uk
+author_name: Douglas Winter
+component_owner: group:default/sscc
+description: Microservice for reading HDF5 data and serving it via REST, aimed at
+    performance and concurrency
+distribution_name: hdf5-reader-service
+docker: true
+docs_type: sphinx
+git_platform: github.com
+github_org: DiamondLightSource
+package_name: hdf5_reader_service
+repo_name: hdf5-reader-service
