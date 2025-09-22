@@ -1,5 +1,6 @@
 import sys
-from typing import Any, Callable, List, Mapping, TypeVar, Union
+from collections.abc import Callable, Mapping
+from typing import Any, TypeVar
 
 import h5py as h5
 from pydantic import BaseModel
@@ -50,7 +51,7 @@ class NumpySafeJSONResponse(JSONResponse):
 
 
 #: Something that can be passed to json.dump
-_Jsonable = Union[Mapping[str, Any], List[Any], bool, int, float, str]
+_Jsonable = Mapping[str, Any] | list[Any] | bool | int | float | str
 
 #: Data type to map into tree
 T = TypeVar("T")
@@ -59,7 +60,7 @@ T = TypeVar("T")
 def h5_tree_map(
     callback: Callable[[str, h5.HLObject], T], root: h5.HLObject
 ) -> DataTree[T]:
-    name = root.name.split("/")[-1]
+    name = root.name.split("/")[-1] if root.name else "root"
     block: DataTree[T] = DataTree(
         name=name,
         valid=True,
@@ -67,7 +68,7 @@ def h5_tree_map(
     )
     if isinstance(block.node, ValidNode):
         if hasattr(root, "items"):
-            for k, v in root.items():
+            for k, v in root.items():  # type: ignore
                 if v is not None:
                     block.node.subnodes.append(h5_tree_map(callback, v))
                 else:

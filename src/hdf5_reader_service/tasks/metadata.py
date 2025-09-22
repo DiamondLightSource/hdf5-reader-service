@@ -1,4 +1,5 @@
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 import h5py
 import numpy as np
@@ -24,7 +25,7 @@ def fetch_metadata(path: str, subpath: str, swmr: bool) -> MetadataNode:
 
 
 def metadata(node: h5py.HLObject) -> MetadataNode:
-    name = node.name
+    name = node.name or "node"
     attributes = _without_bytes(dict(node.attrs))
 
     data = MetadataNode(name=name, attributes=attributes)

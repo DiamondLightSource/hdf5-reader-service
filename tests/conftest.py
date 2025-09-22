@@ -1,4 +1,4 @@
-from os.path import abspath, dirname
+from os.path import abspath
 from pathlib import Path
 from posixpath import dirname
 

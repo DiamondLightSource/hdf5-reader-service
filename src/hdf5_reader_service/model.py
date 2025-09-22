@@ -1,13 +1,14 @@
+from collections.abc import Mapping
 from enum import Enum
-from typing import Any, Generic, List, Mapping, Optional, Tuple, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 import h5py as h5
 from pydantic import BaseModel
 
 
 class DatasetMacroStructure(BaseModel):
-    shape: Tuple[int, ...]
-    chunks: Optional[Tuple[int, ...]] = None
+    shape: tuple[int, ...]
+    chunks: tuple[int, ...] | None = None
 
 
 class ByteOrder(Enum):
@@ -40,15 +41,15 @@ class DatasetStructure(BaseModel):
 class MetadataNode(BaseModel):
     name: str
     attributes: Mapping[str, Any]
-    structure: Optional[DatasetStructure] = None
+    structure: DatasetStructure | None = None
 
 
 class NodeChildren(BaseModel):
-    nodes: List[str]
+    nodes: list[str]
 
 
 class ShapeMetadata(BaseModel):
-    shape: Optional[Tuple[int, ...]] = None
+    shape: tuple[int, ...] | None = None
 
 
 T = TypeVar("T")
@@ -56,7 +57,7 @@ T = TypeVar("T")
 
 class ValidNode(BaseModel, Generic[T]):
     contents: T
-    subnodes: List["DataTree"] = []
+    subnodes: list["DataTree"] = []
 
 
 class InvalidNodeReason(Enum):
@@ -71,7 +72,7 @@ class InvalidNode(BaseModel):
 class DataTree(BaseModel, Generic[T]):
     name: str
     valid: bool
-    node: Union[InvalidNode, ValidNode[T]]
+    node: InvalidNode | ValidNode[T]
 
 
 ValidNode.model_rebuild()

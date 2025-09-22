@@ -7,6 +7,9 @@ import sys
 from pathlib import Path
 from subprocess import STDOUT, CalledProcessError, check_output
 
+from setuptools.command.build_py import build_py as _build_py
+from setuptools.command.sdist import sdist as _sdist
+
 # These will be filled in if git archive is run or by setup.py cmdclasses
 GIT_REFS = "$Format:%D$"
 GIT_SHA1 = "$Format:%h$"
@@ -33,9 +36,9 @@ def get_version_from_git(path=None):
         try:
             cmd_out = check_output(CMD.split(), stderr=STDOUT, cwd=path)
         except Exception as e:
-            sys.stderr.write("%s: %s\n" % (type(e).__name__, str(e)))
+            sys.stderr.write(f"{type(e).__name__}: {str(e)}\n")
             if isinstance(e, CalledProcessError):
-                sys.stderr.write("-> %s" % e.output.decode())
+                sys.stderr.write(f"-> {e.output.decode()}")
             return "0.0+unknown", None, e
         else:
             out = cmd_out.decode().strip()
@@ -45,7 +48,7 @@ def get_version_from_git(path=None):
             if "-" in out:
                 # There is a tag, extract it and the other pieces
                 match = re.search(r"^(.+)-(\d+)-g([0-9a-f]+)$", out)
-                tag, plus, sha1 = match.groups()
+                tag, plus, sha1 = match.groups()  # type: ignore
             else:
                 # No tag, just sha1
                 sha1 = out
@@ -60,16 +63,12 @@ def get_version_from_git(path=None):
 __version__, git_sha1, git_error = get_version_from_git()
 
 
-def get_cmdclass(build_py=None, sdist=None):
+def get_cmdclass():
     """Create cmdclass dict to pass to setuptools.setup.
 
     Create cmdclass dict to pass to setuptools.setup which will write a
     _version_static.py file in our resultant sdist, wheel or egg.
     """
-    if build_py is None:
-        from setuptools.command.build_py import build_py
-    if sdist is None:
-        from setuptools.command.sdist import sdist
 
     def make_version_static(base_dir: str, pkg: str):
         vg = Path(base_dir) / pkg.split(".")[0] / "_version_git.py"
@@ -79,22 +78,22 @@ def get_cmdclass(build_py=None, sdist=None):
                 for line in lines:
                     # Replace GIT_* with static versions
                     if line.startswith("GIT_SHA1 = "):
-                        f.write("GIT_SHA1 = '%s'\n" % git_sha1)
+                        f.write(f"GIT_SHA1 = '{git_sha1}'\n")
                     elif line.startswith("GIT_REFS = "):
-                        f.write("GIT_REFS = 'tag: %s'\n" % __version__)
+                        f.write(f"GIT_REFS = 'tag: {__version__}'\n")
                     else:
                         f.write(line)
 
-    class BuildPy(build_py):
+    class BuildPy(_build_py):
         def run(self):
-            build_py.run(self)
+            super().run()
             for pkg in self.packages:
                 make_version_static(self.build_lib, pkg)
 
-    class Sdist(sdist):
+    class Sdist(_sdist):
         def make_release_tree(self, base_dir, files):
-            sdist.make_release_tree(self, base_dir, files)
+            super().make_release_tree(base_dir, files)
             for pkg in self.distribution.packages:
                 make_version_static(base_dir, pkg)
 
-    return dict(build_py=BuildPy, sdist=Sdist)
+    return {"build_py": BuildPy, "sdist": Sdist}

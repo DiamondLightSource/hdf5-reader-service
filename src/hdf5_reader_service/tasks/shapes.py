@@ -8,8 +8,8 @@ def fetch_shapes(path: str, subpath: str, swmr: bool) -> DataTree[ShapeMetadata]
     path = "/" + path
 
     def get_shape(name: str, obj: h5py.HLObject) -> ShapeMetadata:
-        if hasattr(obj, "shape") and obj.shape != tuple():
-            return ShapeMetadata(shape=obj.shape)
+        if hasattr(obj, "shape") and obj.shape != ():  # type: ignore
+            return ShapeMetadata(shape=obj.shape)  # type: ignore
         else:
             return ShapeMetadata()
 
