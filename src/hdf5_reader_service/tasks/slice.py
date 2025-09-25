@@ -16,6 +16,7 @@ def fetch_slice(
             if subpath in f:
                 dataset = f[subpath]
                 if isinstance(dataset, h5py.Dataset):
+                    print(f"{subpath} IS a dataset!!!")
                     return dataset[slices]
                 else:
                     raise KeyError(

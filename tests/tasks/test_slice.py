@@ -153,9 +153,16 @@ def test_fetch_slice(
     np.testing.assert_array_equal(data_slice, expected)
 
 
-def test_fetch_slice_of_group(test_data_path: Path) -> None:
+def test_fetch_slice_without_slice_info(test_data_path: Path) -> None:
     with pytest.raises(KeyError):
         fetch_slice(str(test_data_path), "/entry", None, True)
+
+
+def test_subpath_not_h5py_dataset(test_data_path: Path) -> None:
+    with pytest.raises(KeyError):
+        fetch_slice(
+            str(test_data_path), "/entry/sample", "0:1:1", False
+        )  # sample is a Group, not a dataset
 
 
 def test_fetch_slice_subpath_not_in_path(test_data_path: Path) -> None:
