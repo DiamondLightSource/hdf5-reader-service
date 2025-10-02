@@ -1,10 +1,11 @@
 import io
 import multiprocessing as mp
 import sys
-from typing import Any, Callable, Tuple
+from collections.abc import Callable
+from typing import Any
 
 
-def fork_and_do(func: Callable[..., Any], args: Tuple[Any, ...]):
+def fork_and_do(func: Callable[..., Any], args: tuple[Any, ...]):
     queue: mp.Queue = mp.Queue()
 
     def do_func(other_end_of_queue: mp.Queue, *args, **kwargs):

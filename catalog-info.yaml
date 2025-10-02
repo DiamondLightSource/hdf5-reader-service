@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: hdf5-reader-service
+  title: hdf5-reader-service
+  description: Microservice for reading HDF5 data and serving it via REST, aimed at performance and concurrency
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/sscc

@@ -1,5 +1,4 @@
 import os
-from typing import Optional
 
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
@@ -43,7 +42,7 @@ def get_shapes(path: str, subpath: str = "/") -> JSONResponse:
 
 @router.get("/slice/")
 def get_slice(
-    path: str, subpath: str = "/", slice_info: Optional[str] = None
+    path: str, subpath: str = "/", slice_info: str | None = None
 ) -> JSONResponse:
     """Function that tells flask to output the metadata of the HDF5 file node.
     The slice_info parameter should take the form

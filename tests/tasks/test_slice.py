@@ -1,6 +1,6 @@
 import sys
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Mapping
 
 import numpy as np
 import pytest
@@ -153,9 +153,22 @@ def test_fetch_slice(
     np.testing.assert_array_equal(data_slice, expected)
 
 
-def test_fetch_slice_of_group(test_data_path: Path) -> None:
+def test_fetch_slice_without_slice_info(test_data_path: Path) -> None:
     with pytest.raises(KeyError):
         fetch_slice(str(test_data_path), "/entry", None, True)
+
+
+def test_subpath_not_h5py_dataset(test_data_path: Path) -> None:
+    with pytest.raises(KeyError):
+        fetch_slice(
+            str(test_data_path), "/entry/sample", "0:1:1", False
+        )  # sample is a Group, not a dataset
+
+
+def test_fetch_slice_subpath_not_in_path(test_data_path: Path) -> None:
+    with pytest.raises(KeyError):
+        slice_info = "2:7:1,10:14:1,9:10:1,0:3:1"
+        fetch_slice(str(test_data_path), "/something_else", slice_info, True)
 
 
 def test_fetch_slice_of_broken_link(test_data_path: Path) -> None:
