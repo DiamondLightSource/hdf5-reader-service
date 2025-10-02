@@ -62,3 +62,34 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  helm_publish:
+    name: Publish helm chart
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Install helm
+        uses: Azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        id: install
+
+      - name: Login to gcr using helm
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | \
+            helm registry login ghcr.io \
+            --username ${{ github.repository_owner }} \
+            --password-stdin
+
+      - name: Package and publish helm chart
+        run: |
+          CHART_DIR=helm/hdf5-reader-service
+          CHART_NAME=hdf5-reader-service
+          VERSION=${GITHUB_REF##*/}
+          helm dependencies update $CHART_DIR
+          helm package $CHART_DIR --version $VERSION --app-version $VERSION -d /tmp/
+          helm push /tmp/${CHART_NAME}-${VERSION}.tgz oci://ghcr.io/diamondlightsource/charts
