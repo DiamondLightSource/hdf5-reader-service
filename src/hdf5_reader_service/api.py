@@ -12,7 +12,14 @@ from hdf5_reader_service.model import (
 from hdf5_reader_service.utils import NumpySafeJSONResponse
 
 from .fork import fork_and_do
-from .tasks import fetch_children, fetch_metadata, fetch_shapes, fetch_slice, fetch_tree
+from .tasks import (
+    fetch_children,
+    fetch_map,
+    fetch_metadata,
+    fetch_shapes,
+    fetch_slice,
+    fetch_tree,
+)
 
 SWMR_DEFAULT = bool(int(os.getenv("HDF5_SWMR_DEFAULT", "1")))
 
@@ -59,3 +66,9 @@ def get_tree(path: str, subpath: str = "/") -> JSONResponse:
     """Function that tells flask to render the tree of the HDF5 file."""
     tree = fork_and_do(fetch_tree, args=(path, subpath, SWMR_DEFAULT))
     return NumpySafeJSONResponse(tree)
+
+
+@router.get("/map")
+def get_map(filepath, datapath) -> JSONResponse:
+    r = fork_and_do(fetch_map, args=(filepath, datapath, SWMR_DEFAULT))
+    return NumpySafeJSONResponse(r)

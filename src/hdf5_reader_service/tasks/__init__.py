@@ -1,3 +1,4 @@
+from .map import fetch_map
 from .metadata import fetch_metadata
 from .search import fetch_children
 from .shapes import fetch_shapes
@@ -10,4 +11,5 @@ __all__ = [
     "fetch_shapes",
     "fetch_slice",
     "fetch_tree",
+    "fetch_map",
 ]
