@@ -18,6 +18,7 @@ dependencies = [
     "uvicorn",
     "orjson",
     "click",
+    "stomp.py",
     "typing-extensions;python_version<'3.8'",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
@@ -36,6 +37,7 @@ dev = [
     "pyright",
     "pytest",
     "pytest-cov",
+    "pytest-asyncio",
     "ruff",
     "sphinx-autobuild",
     "sphinx-copybutton",
