@@ -1,7 +1,9 @@
+import json
 import os
+from dataclasses import asdict
 
-from fastapi import APIRouter
-from starlette.responses import JSONResponse
+from fastapi import APIRouter, Request
+from starlette.responses import JSONResponse, StreamingResponse
 
 from hdf5_reader_service.model import (
     DataTree,
@@ -72,3 +74,23 @@ def get_tree(path: str, subpath: str = "/") -> JSONResponse:
 def get_map(filepath, datapath) -> JSONResponse:
     r = fork_and_do(fetch_map, args=(filepath, datapath, SWMR_DEFAULT))
     return NumpySafeJSONResponse(r)
+
+
+@router.get("/events")
+async def events(request: Request):
+    tracker = request.app.state.tracker
+
+    async def event_stream():
+        # each client iterates over the async generator from scan tracker
+        async for msg in tracker.listen():
+            # msg is already a dict snapshot
+            yield f"data: {json.dumps(msg)}\n\n"
+
+    return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
+@router.get("/scans/latest")
+def get_latest(request: Request):
+    tracker = request.app.state.tracker
+    latest = tracker.get_latest()
+    return JSONResponse(asdict(latest))

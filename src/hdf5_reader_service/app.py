@@ -1,9 +1,32 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+
+from hdf5_reader_service.scan_tracker import ScanTracker
 
 from .api import router
 
-# Setup the app
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    loop = asyncio.get_running_loop()
+    tracker = ScanTracker(
+        host="b01-1-rabbitmq-daq.diamond.ac.uk",
+        port=61613,
+        username="guest",
+        password="guest",
+        destination="public.worker.event",  # bare topic -> ScanTracker will prefix
+        loop=loop,
+    )
+    app.state.tracker = tracker
+    try:
+        yield
+    finally:
+        tracker.disconnect()
+
+
+app = FastAPI(lifespan=lifespan)
 app.include_router(router)
 
 
