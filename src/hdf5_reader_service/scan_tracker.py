@@ -7,6 +7,8 @@ from dataclasses import asdict, dataclass
 import stomp
 
 logger = logging.getLogger("scantracker")
+logger.setLevel(logging.INFO)
+logger.propagate = True
 
 
 @dataclass
@@ -21,8 +23,7 @@ class ScanTracker(stomp.ConnectionListener):
     Encapsulates a STOMP connection and maintains the latest scan state.
     - `loop` must be the asyncio event loop running the FastAPI app (pass from lifespan)
     - `destination` may be either a full STOMP destination (starts with "/") or a bare
-      topic name
-      in which case we subscribe to "/topic/{destination}".
+      topic name in which case we subscribe to "/topic/{destination}".
     """
 
     def __init__(
