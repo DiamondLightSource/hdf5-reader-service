@@ -9,6 +9,17 @@ def fetch_map(path: str, subpath: str, swmr: bool) -> np.ndarray:
         shape = f["/entry/plan_metadata/shape"]
         flat = f[subpath]
         if isinstance(shape, h5py.Dataset) and isinstance(flat, h5py.Dataset):
-            return np.array(flat).reshape(shape)  # type: ignore
+            n = len(flat)
+            n_y, n_x = shape
+
+            filled_rows, remainder = divmod(n, n_x)
+            if remainder > 0:
+                filled_rows += 1
+
+            data = np.full([n_y, n_x], np.nan)
+            partial = np.array(flat)
+            data.flat[:n] = partial
+
+            return data
         else:
             raise KeyError
