@@ -2,7 +2,7 @@ import h5py
 import numpy as np
 
 
-def fetch_map(path: str, subpath: str, swmr: bool) -> np.ndarray:
+def fetch_map(path: str, subpath: str, swmr: bool) -> dict[str, list[list[float]]]:
     path = "/" + path
 
     with h5py.File(path, "r", swmr=swmr, libver="latest") as f:
@@ -20,6 +20,6 @@ def fetch_map(path: str, subpath: str, swmr: bool) -> np.ndarray:
             partial = np.array(flat)
             data.flat[:n] = partial
 
-            return data
+            return {"values": data.tolist()}
         else:
             raise KeyError
