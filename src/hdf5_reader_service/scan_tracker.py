@@ -152,8 +152,14 @@ class ScanTracker(stomp.ConnectionListener):
         self._subscribers.add(q)
         try:
             while True:
-                item = await q.get()
-                yield item
+                try:
+                    # Use timeout to periodically wake up
+                    item = await asyncio.wait_for(q.get(), timeout=15.0)
+                    yield item
+                except TimeoutError:
+                    # Send heartbeat comment in case client assumes the SSE stream
+                    # is dead and disconnects
+                    yield {"type": "heartbeat"}
         finally:
             # ensure cleanup if client disconnects / generator cancels
             self._subscribers.discard(q)
