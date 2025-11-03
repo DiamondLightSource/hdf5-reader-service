@@ -55,10 +55,8 @@ class ScanTracker(stomp.ConnectionListener):
         self._conn.subscribe(destination=dest, id="1", ack="auto")
         logger.info(f"ScanTracker subscribed to {dest}")
 
-    # ----------------------
-    # Public API
-    # ----------------------
     def get_latest(self) -> LatestScan:
+        """Get snapshot of latest scan"""
         with self._latest_lock:
             # return a copy so callers don't mutate internal state
             return LatestScan(**self._latest.__dict__)
@@ -122,9 +120,6 @@ class ScanTracker(stomp.ConnectionListener):
             # ignore other messages for now (could handle progress later)
             logger.debug(f"Ignoring message type: {name}")
 
-    # ----------------------
-    # Async broadcasting (runs in event loop)
-    # ----------------------
     async def _broadcast(self, msg: dict):
         """
         Put `msg` into every subscriber queue. This runs in the event loop (safe).
@@ -135,7 +130,6 @@ class ScanTracker(stomp.ConnectionListener):
         subs = list(self._subscribers)
         for q in subs:
             try:
-                # do not await many puts serially for speed; but fine for small fanout
                 await q.put(msg)
             except Exception:
                 logger.exception("Failed to put message into subscriber queue")
