@@ -2,7 +2,9 @@ import h5py
 import numpy as np
 
 
-def fetch_map(path: str, subpath: str, swmr: bool) -> dict[str, list[list[float]]]:
+def fetch_map(
+    path: str, subpath: str, snake: bool, swmr: bool
+) -> dict[str, list[list[float]]]:
     """
     Reshapes a flat dataset into a 2D map.
     FIXME does not support snake scans
@@ -20,6 +22,9 @@ def fetch_map(path: str, subpath: str, swmr: bool) -> dict[str, list[list[float]
             data = np.full([n_y, n_x], np.nan)
             partial = np.array(flat)
             data.flat[:n] = partial
+
+            if snake:  # reverse every other row
+                data[1::2] = data[1::2, ::-1]
 
             return {"values": data.tolist()}
         else:
