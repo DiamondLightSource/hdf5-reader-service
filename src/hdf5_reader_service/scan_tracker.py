@@ -90,7 +90,7 @@ class ScanTracker(stomp.ConnectionListener):
             uid = doc.get("uid")
             data_dir = doc.get("data_session_directory")
             scan_file = doc.get("scan_file")
-            snake = "Snake" in doc.get("plan_args").get("spec")
+            snake = "Snake" in doc.get("plan_args", {}).get("spec", {})
             if uid and data_dir and scan_file:
                 filepath = f"{data_dir}/{scan_file}.nxs"
                 with self._latest_lock:
