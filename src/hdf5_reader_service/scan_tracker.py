@@ -15,6 +15,7 @@ logger.propagate = True
 class LatestScan:
     uuid: str | None = None
     filepath: str | None = None
+    snake: bool = False
     status: str = "idle"  # idle | running | finished | failed
 
 
@@ -89,11 +90,13 @@ class ScanTracker(stomp.ConnectionListener):
             uid = doc.get("uid")
             data_dir = doc.get("data_session_directory")
             scan_file = doc.get("scan_file")
+            snake = "Snake" in doc.get("plan_args", {}).get("spec", {})
             if uid and data_dir and scan_file:
                 filepath = f"{data_dir}/{scan_file}.nxs"
                 with self._latest_lock:
                     self._latest.uuid = uid
                     self._latest.filepath = filepath
+                    self._latest.snake = snake
                     self._latest.status = "running"
                 snapshot = asdict(self.get_latest())
                 # schedule broadcast to event-loop subscribers
