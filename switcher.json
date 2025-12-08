@@ -4,6 +4,10 @@
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/main/"
   },
   {
+    "version": "v0.3.0",
+    "url": "https://DiamondLightSource.github.io/hdf5-reader-service/v0.3.0/"
+  },
+  {
     "version": "v0.2.7",
     "url": "https://DiamondLightSource.github.io/hdf5-reader-service/v0.2.7/"
   },
