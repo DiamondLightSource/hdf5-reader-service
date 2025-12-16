@@ -71,7 +71,7 @@ def get_tree(path: str, subpath: str = "/") -> JSONResponse:
 
 
 @router.get("/map")
-def get_map(filepath, datapath, snake) -> JSONResponse:
+def get_map(filepath: str, datapath: str, snake: bool = False) -> JSONResponse:
     r = fork_and_do(fetch_map, args=(filepath, datapath, snake, SWMR_DEFAULT))
     return NumpySafeJSONResponse(r)
 
