@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6.0.1
         with:
           # Need this to get version number from last tag
           fetch-depth: 0
@@ -70,7 +70,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4
 
       - name: Install helm
         uses: Azure/setup-helm@1a275c3b69536ee54be43f2070a358922e12c8d4 # v4
